@@ -5,7 +5,7 @@ function createFactoryHTML(x){
   let ele = document.createElement("div")
   let space = "&nbsp".repeat(3)
   space+="/"+space
-  ele.innerHTML=`Factory I: Rank I${space}+<span id='factoryProduction${x}'></span> points${space}<button onclick='buyFactory(${x})' class='factory'><span id='factoryCost${x}'></span> points</button>`
+  ele.innerHTML=`Factory I: Rank I${space}+<span id='factoryProduction${x}'></span> points${space}<button onclick='buyFactory(${x})' class='factory' id='factoryButton${x}'><span id='factoryCost${x}'></span> points</button>`
   document.getElementById("factories").appendChild(ele)
 }
 
@@ -21,8 +21,12 @@ function buyFactory(x){
   }
 }
 
-function updateFactory(textOnly=false){
+function updateFactory(textOnly=false,css=false){
   for(let x=0;x<1;x++){
+    if(css){
+      document.getElementById(`factoryButton${x}`).className=`factory ${player.points.gte(player.factory[x].c)?"bought":"notbought"}`
+      continue;
+    }
     if(!textOnly){
       player.factory[x].c = factoryCost(x)
       player.factory[x].p = player.factory[x].a

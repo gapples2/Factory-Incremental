@@ -7,7 +7,7 @@ function fixSave(main,data){
   Object.keys(main).forEach(o=>{
     if(main[o] instanceof OmegaNum){main[o]=new OmegaNum(data[o]||main[o])}
     else if(typeof main[o] == "object"&&!(main[o] instanceof OmegaNum)){fixSave(main[o],data[o])}
-    else main[o]=data[o]
+    else main[o]=data[o]||main[o]
   })
 }
 

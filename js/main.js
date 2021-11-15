@@ -7,6 +7,7 @@ let player = {
   //misc
   time: Date.now(),
   saveInterval: 0,
+  tab: "factories",
 }
 
 function loop(){
@@ -22,7 +23,15 @@ function loop(){
     save()
   }
   
+  updateFactory(false,true)
+  
   requestAnimationFrame(loop)
+}
+
+function changeTab(x){
+  document.getElementById(player.tab).style.display="none"
+  document.getElementById(x).style.display=""
+  player.tab=x
 }
 
 function loadLayers(){
@@ -32,6 +41,7 @@ function loadLayers(){
 function loadGame(){
   load()
   loadLayers()
+  changeTab(player.tab)
   player.saveInterval=0
   requestAnimationFrame(loop)
 }

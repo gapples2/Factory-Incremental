@@ -3,13 +3,15 @@
   <head>
     <title>Factory Incremental</title>
     
+    <link id="favicon" rel="icon" href="https://cdn.glitch.me/87d6c344-7463-4a06-bb43-299659b0719b%2Ffavicon.ico?v=1637005932717" type="image/x-icon">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     
     <style>*{font-family: 'Montserrat', sans-serif;}</style>
 
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css">
 
     <script src="js/internal/o_m.js" defer></script>
     <script src="js/internal/save.js" defer></script>
@@ -21,10 +23,24 @@
     <script src="js/main.js" defer></script>
   </head>
   <body onload="loadGame()">
-    <h1>Factory Incremental<sup style="font-size:20px">V0.0.1</sup></h1>
+    <h1>Factory Incremental<sup style="font-size:20px">V0.0.2</sup></h1>
     <h2>You have <span id="points"></span> points</h2>
-    <div id="factories">
-      
+    <div id="tabs">
+      <button onclick="changeTab('factories')" class="tab">Factories</button>
+      <button onclick="changeTab('settings')" class="tab">Settings</button>
+    </div><br>
+    <div id="factories" style="display:none"></div>
+    <div id="settings" style="display:none">
+      <button onclick="save()" style="border-color:green" class="settings">Save</button>
+      <div id="changelog" style="text-align:left">
+        <h2>Change Log:</h2>
+        Most Recent:<br>
+        V0.0.2 - Design+: Adds tabs, settings, the changelog, more colors, and that little tab icon. Also fixes save data not being updated with new variables.
+        <br><br>---------------------------------------------------------------------------------------------------------------------<br><br>
+        V0.0.0 - The Beginning: Everything up to the first factory was added, including: saving, loading, the game loop, and updating everything. Also had a game breaking bug.<br><br>
+        V0.0.0b - The Beginning: Fixed the game breaking bug.<br><br>
+        V0.0.1 - Design: Made the game look nice.
+      </div>
     </div>
   </body>
 </html>
