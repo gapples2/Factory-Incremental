@@ -1,0 +1,21 @@
+*{
+  text-align:center;
+  background-color:black;
+  color:white
+}
+
+button{
+  transition:0.5s;
+  border:3px solid grey;
+  border-radius:10px;
+}
+
+.factory{
+  width:150px;
+  height:25px;
+}
+
+.factory:hover{
+  width:155px;
+  height:27px;
+}
