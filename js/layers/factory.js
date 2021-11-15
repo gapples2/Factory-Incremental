@@ -3,9 +3,9 @@ const factoryBaseCost = [new OmegaNum(10)]
 
 function createFactoryHTML(x){
   let ele = document.createElement("div")
-  let space = "&nbsp".repeat(2)
+  let space = "&nbsp".repeat(3)
   space+="/"+space
-  ele.innerHTML=`Factory I: Rank I${space}+<span id='factoryProduction${x}'></span> points/sec${space}<button onclick='buyFactory(${x})'>Buy factory for <span id='factoryCost${x}'></span></button>`
+  ele.innerHTML=`Factory I: Rank I${space}+<span id='factoryProduction${x}'></span> points${space}<button onclick='buyFactory(${x})' class='factory'><span id='factoryCost${x}'></span> points</button>`
   document.getElementById("factories").appendChild(ele)
 }
 
