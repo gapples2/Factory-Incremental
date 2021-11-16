@@ -10,6 +10,11 @@ button{
   border-radius:10px;
 }
 
+span{
+  color:inherit;
+  background-color:inherit;
+}
+
 .factory{
   width:150px;
   height:25px;
@@ -18,4 +23,65 @@ button{
 .factory:hover{
   width:155px;
   height:27px;
+}
+
+.bought{
+  color: #00ff00;
+  background-color: #005500;
+  border-color: #00ff00;
+}
+
+.bought:hover{
+  color: #005500;
+  background-color: #00ff00;
+  border-color: #005500;
+}
+
+.notbought{
+  color: #ff0000;
+  background-color: #550000;
+  border-color: #ff0000;
+}
+
+.notbought:hover{
+  color: #550000;
+  background-color: #ff0000;
+  border-color: #550000;
+}
+
+.rankup{
+  color: #0000ff;
+  background-color: #000055;
+  border-color: #0000ff;
+}
+
+.rankup:hover{
+  color: #000055;
+  background-color: #0000ff;
+  border-color: #000055;
+}
+
+.tab{
+  width: 200px;
+  height: 25px;
+}
+
+.tab:hover{
+  width: 207px;
+  height: 27px;
+}
+
+.settings{
+  width:100px;
+  height:25px;
+}
+
+.settings:hover{
+  width:104px;
+  height:27px;
+}
+
+.factoryText{
+  font-size:20px;
+  color:#999999
 }
