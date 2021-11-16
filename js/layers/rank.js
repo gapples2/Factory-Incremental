@@ -6,6 +6,8 @@ function rankUpCost(x){
       break;
     case 1:
       return new OmegaNum(2.5).pow(r).times(10).floor()
+    case 2:
+      return new OmegaNum(3.5).pow(r).times(15).floor()
   }
 }
 function canRankUp(x){

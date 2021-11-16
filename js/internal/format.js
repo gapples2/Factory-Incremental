@@ -167,5 +167,5 @@ function formatSmall(num, precision=2) {
 }
 
 function romanNumeral(x){
-  return ['I','II','III','IV','V','VI','VII','VIII','IX','X'][x]// i dont think i'll need anything higher than this
+  return ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX'][x]// i dont think i'll need anything higher than this
 }

@@ -1,18 +1,21 @@
-const factoryCostScaling = [new OmegaNum(1.2),new OmegaNum(1.5)]
-const factoryBaseCost = [new OmegaNum(10),new OmegaNum(150)]
+const factoryCostScaling = [new OmegaNum(1.2),new OmegaNum(1.5),new OmegaNum(1.8)]
+const factoryBaseCost = [new OmegaNum(10),new OmegaNum(150),new OmegaNum(5000)]
 const factoryUnlocked = [
   ()=>{return true},
   ()=>{return player.factory[0].a.gte(15)},
+  ()=>{return player.factory[1].a.gte(12)}
 ]
 const factoryUnlockedText = [
   "if you see this there's a bug",
-  "Factory II - Unlock at <span class='factoryText'>15</span> x Factory I"
+  "Factory II - Unlock at <span class='factoryText'>15</span> x Factory I",
+  "Factory III - Unlock at <span class='factoryText'>12</span> x Factory II"
 ]
 const showFactory = [
   ()=>{return true},
-  ()=>{return true}
+  ()=>{return true},
+  ()=>{return player.tech[0]>=1}
 ]
-const factoryAmount = 2
+const factoryAmount = 3
 
 function createFactoryHTML(x){
   let ele = document.createElement("tr")
@@ -31,10 +34,13 @@ function factoryProduction(x){
   let r = player.factory[x].r
   switch(x){
     case 0:
-      return r.add(1)
+      return r.add(1).times(techData[1].effect())
       break;
     case 1:
       return player.factory[0].p.sqrt().add(1).times(r.div(2).add(1).pow(r.div(2).add(1)))
+      break;
+    case 2:
+      return player.factory[1].p.div(player.factory[1].a.add(1).sqrt()).add(1).times(r.div(2).add(1).pow(r.div(2).add(1)))
       break;
   }
 }
@@ -62,7 +68,7 @@ function updateFactory(textOnly=false,css=false){
       let cr = canRankUp(x)
       document.getElementById(`factoryButton${x}`).className=`factory ${cr?"rankup":(player.points.gte(player.factory[x].c)?"bought":"notbought")}`
       document.getElementById(`factory${x}`).style.display = player.factory[x].s&&player.factory[x].u?"":"none"
-      document.getElementById(`factoryNotUnlocked${x}`).style.display = player.factory[x].s&&player.factory[x].u?"none":""
+      document.getElementById(`factoryNotUnlocked${x}`).style.display = player.factory[x].s&&!player.factory[x].u?"":"none"
       continue;
     }
     if(!textOnly){
