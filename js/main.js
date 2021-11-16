@@ -2,7 +2,8 @@ const D = x=>new OmegaNum(x)
 let player = {
   //main
   points:D(10),
-  factory:[{a:D(0),c:D(0),p:D(0),r:D(0)}],
+  pps:D(0),
+  factory:[{a:D(0),c:D(0),p:D(0),r:D(0),s:false,u:false},{a:D(0),c:D(0),p:D(0),r:D(0),s:false,u:false}],
   
   //misc
   time: Date.now(),
@@ -14,8 +15,10 @@ function loop(){
   let diff = (Date.now()-player.time)/1000
   player.time=Date.now()
   
-  player.points=player.points.add(player.factory[0].p.times(diff))
+  player.pps = player.factory[0].p.add(player.factory[1].p)
+  player.points=player.points.add(player.pps.times(diff))
   document.getElementById("points").innerText=format(player.points)
+  document.getElementById("pps").innerText=format(player.pps)
   
   player.saveInterval+=diff
   if(player.saveInterval>=10){

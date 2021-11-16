@@ -165,3 +165,7 @@ function formatWhole(num) {
 function formatSmall(num, precision=2) { 
     return format(num, precision, true)    
 }
+
+function romanNumeral(x){
+  return ['I','II','III','IV','V','VI','VII','VIII','IX','X'][x]// i dont think i'll need anything higher than this
+}
