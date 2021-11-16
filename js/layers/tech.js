@@ -13,21 +13,48 @@ const techData = [
           return new OmegaNum(1e308)
           break;
       }
-    }
+    },
+    unlocked(){return true}
   },
   {
     name: "Factory Boosters",
     buttonDisplay: "FB",
     desc: "Boost the first factory production based on the amount of first factories you have.",
-    max(){return 1},
+    max(){return 4},
     cost(){
       let x = Math.min(player.tech[1],this.max()-1)
-      return new OmegaNum(2).pow(new OmegaNum(10).pow(x)).times(10000)
+      return new OmegaNum(2).pow(D(x).pow(x)).times(10000).div(new OmegaNum(100000).pow(player.tech[3]))
     },
     effect(){
       return player.factory[0].a.add(1).log10().add(1).pow(player.tech[1])
     },
-    effectDisplay(){return `${format(this.effect())}x F1 production`}
+    effectDisplay(){return `${format(this.effect())}x F1 production`},
+    unlocked(){return player.tech[0]>=1}
+  },
+  {
+    name: "Factory Synergy",
+    buttonDisplay: "FS",
+    desc: "Boost the first factory production based on 2nd and 3rd factory amounts.",
+    max(){return 2},
+    cost(){
+      let x = Math.min(player.tech[2],this.max()-1)
+      return new OmegaNum(3).pow(D(x+1).pow(x+1).pow(1.5)).times(30000).div(new OmegaNum(10).pow(player.tech[3]))
+    },
+    effect(){
+      return player.factory[1].a.add(1).logBase(2).add(1).times(player.factory[2].a.add(1).sqrt()).pow(player.tech[2])
+    },
+    effectDisplay(){return `${format(this.effect())}x F1 production`},
+    unlocked(){return player.tech[1]>=2}
+  },
+  {
+    name: "Tech Cheapener",
+    buttonDisplay: "TC",
+    desc: "Make 'Factory Boosters' 100,000x cheaper and 'Factory Synergy' 10x cheaper.",
+    max(){return 1},
+    cost(){
+      return new OmegaNum(1e7)
+    },
+    unlocked(){return player.tech[1]>=2}
   }
 ]
 
@@ -36,6 +63,7 @@ function buyTech(x){
   player.points=player.points.minus(techData[x].cost())
   player.tech[x]++
   updateTech()
+  updateFactory()
   handleTechHover(x)
 }
 
@@ -73,6 +101,7 @@ function updateTech(textOnly=false,css=false){
   for(let x=0;x<techData.length;x++){
     if(css){
       document.getElementById("tech"+x).style.borderColor=player.tech[x]>=techData[x].max()?"blue":(player.tech[x]==0?"red":"yellow")
+      document.getElementById("tech"+x).style.display=techData[x].unlocked()?"":"none"
       continue;
     }
     

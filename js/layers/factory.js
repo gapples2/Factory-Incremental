@@ -1,14 +1,14 @@
-const factoryCostScaling = [new OmegaNum(1.2),new OmegaNum(1.5),new OmegaNum(1.8)]
+const factoryCostScaling = [new OmegaNum(1.2),new OmegaNum(1.5),new OmegaNum(1.7)]
 const factoryBaseCost = [new OmegaNum(10),new OmegaNum(150),new OmegaNum(5000)]
 const factoryUnlocked = [
   ()=>{return true},
   ()=>{return player.factory[0].a.gte(15)},
-  ()=>{return player.factory[1].a.gte(12)}
+  ()=>{return player.factory[1].a.gte(10)}
 ]
 const factoryUnlockedText = [
   "if you see this there's a bug",
   "Factory II - Unlock at <span class='factoryText'>15</span> x Factory I",
-  "Factory III - Unlock at <span class='factoryText'>12</span> x Factory II"
+  "Factory III - Unlock at <span class='factoryText'>10</span> x Factory II"
 ]
 const showFactory = [
   ()=>{return true},
@@ -21,7 +21,7 @@ function createFactoryHTML(x){
   let ele = document.createElement("tr")
   let space = "&nbsp".repeat(3)
   space+="/"+space
-  ele.innerHTML=`<div id='factory${x}'><span id='factoryAmount${x}' class='factoryText'></span> x Factory ${romanNumeral(x)}${space}Rank <span id='factoryRank${x}'></span><br>+<span id='factoryTotalProduction${x}' class='factoryText'></span> point(s) [+<span id='factoryProduction${x}'></span> point(s)]<br><span id='factoryToRank${x}' class='factoryText'></span>% to ranking up<br><button onclick='handleFactoryButtonClick(${x})' class='factory' id='factoryButton${x}'><span id='factoryCost${x}'></span></button></div><span id='factoryNotUnlocked${x}' style='display:none'>${factoryUnlockedText[x]}</span><br>`
+  ele.innerHTML=`<div id='factory${x}'><span id='factoryAmount${x}' class='factoryText'></span> x Factory ${romanNumeral(x)}${space}Rank <span id='factoryRank${x}'></span><br>+<span id='factoryTotalProduction${x}' class='factoryText'></span> point(s)${space}+<span id='factoryProduction${x}' class='factoryText'></span> point(s)/factory<br><span id='factoryToRank${x}' class='factoryText'></span>% to ranking up<br><button onclick='handleFactoryButtonClick(${x})' class='factory' id='factoryButton${x}'><span id='factoryCost${x}'></span></button></div><span id='factoryNotUnlocked${x}' style='display:none'>${factoryUnlockedText[x]}</span><br>`
   document.getElementById("factories").appendChild(ele)
 }
 
@@ -34,7 +34,7 @@ function factoryProduction(x){
   let r = player.factory[x].r
   switch(x){
     case 0:
-      return r.add(1).times(techData[1].effect())
+      return r.add(1).times(techData[1].effect()).times(techData[2].effect())
       break;
     case 1:
       return player.factory[0].p.sqrt().add(1).times(r.div(2).add(1).pow(r.div(2).add(1)))

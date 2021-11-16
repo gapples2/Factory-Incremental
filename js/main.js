@@ -7,7 +7,8 @@ let player = {
   factory:[{a:D(0),c:D(0),p:D(0),r:D(0),s:false,u:false},{a:D(0),c:D(0),p:D(0),r:D(0),s:false,u:false},{a:D(0),c:D(0),p:D(0),r:D(0),s:false,u:false}],
   
   //tech
-  tech:[0,0],
+  tech:[0,0,0,0],
+  unlockedTech: [true,false,false,false],
   
   //misc
   time: Date.now(),
