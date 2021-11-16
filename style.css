@@ -49,6 +49,18 @@ span{
   border-color: #550000;
 }
 
+.rankup{
+  color: #0000ff;
+  background-color: #000055;
+  border-color: #0000ff;
+}
+
+.rankup:hover{
+  color: #000055;
+  background-color: #0000ff;
+  border-color: #000055;
+}
+
 .tab{
   width: 200px;
   height: 25px;

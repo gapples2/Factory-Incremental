@@ -20,31 +20,32 @@
     <script src="js/internal/save.js" defer></script>
     <script src="js/internal/format.js" defer></script>
     
-    
+    <script src="js/layers/rank.js" defer></script>
     <script src="js/layers/factory.js" defer></script>
     
     <script src="js/main.js" defer></script>
   </head>
   <body onload="loadGame()">
-    <h1>Factory Incremental<sup style="font-size:20px">V0.0.3</sup></h1>
+    <h1>Factory Incremental<sup style="font-size:20px">V0.0.4</sup></h1>
     <h2>You have <span id="points"></span> points <sup>[+<span id="pps"></span> points/sec]</sup></h2>
     <div id="tabs">
       <button onclick="changeTab('factories')" class="tab">Factories</button>
       <button onclick="changeTab('settings')" class="tab">Settings</button>
     </div><br>
-    <div id="factories" style="display:none"></div>
+    <table id="factories" style="display:none;width:100%"></table>
     <div id="settings" style="display:none">
       <button onclick="save()" style="border-color:green" class="settings">Save</button><br>
       <button onclick="hardReset()" style="border-color:red" class="settings">Hard Reset</button>
       <div id="changelog" style="text-align:left">
         <h2>Change Log:</h2>
         Most Recent:<br>
-        V0.0.3 - Factories: Added the second factory, the factory unlocking system, a point gain and production per factory display, and added a discord embed thing.
+        V0.0.4 - Ranks: Added ranks and a percent display for when you can rank up. Endgame: Factory 2 Rank 2 (you can get F1R3 if you want)
         <br><br>---------------------------------------------------------------------------------------------------------------------<br><br>
         V0.0.0 - The Beginning: Everything up to the first factory was added, including: saving, loading, the game loop, and updating everything. Also had a game breaking bug.<br><br>
         V0.0.0b - The Beginning: Fixed the game breaking bug.<br><br>
         V0.0.1 - Design: Made the game look nice.<br><br>
-        V0.0.2 - Design+: Adds tabs, settings, the changelog, more colors, and that little tab icon. Also fixes save data not being updated with new variables.
+        V0.0.2 - Design+: Adds tabs, settings, the changelog, more colors, and that little tab icon. Also fixes save data not being updated with new variables.<br><br>
+        V0.0.3 - Factories: Added the second factory, the factory unlocking system, a point gain and production per factory display, and added a discord embed thing.
       </div>
     </div>
   </body>
