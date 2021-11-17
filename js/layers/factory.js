@@ -1,27 +1,36 @@
-const factoryCostScaling = [new OmegaNum(1.2),new OmegaNum(1.5),new OmegaNum(1.7)]
-const factoryBaseCost = [new OmegaNum(10),new OmegaNum(150),new OmegaNum(5000)]
+const factoryCostScaling = [new OmegaNum(1.2),new OmegaNum(1.5),new OmegaNum(1.7),new OmegaNum(1.9),new OmegaNum(2.1),new OmegaNum(2.3)]
+const factoryBaseCost = [new OmegaNum(10),new OmegaNum(150),new OmegaNum(5000),new OmegaNum(1e7),new OmegaNum(1e19),new OmegaNum(1e25)]
 const factoryUnlocked = [
   ()=>{return true},
   ()=>{return player.factory[0].a.gte(15)},
-  ()=>{return player.factory[1].a.gte(10)}
+  ()=>{return player.factory[1].a.gte(10)},
+  ()=>{return player.factory[2].a.gte(15)},
+  ()=>{return player.factory[1].a.gte(100)},
+  ()=>{return player.factory[4].a.gte(20)}
 ]
 const factoryUnlockedText = [
   "if you see this there's a bug",
   "Factory II - Unlock at <span class='factoryText'>15</span> x Factory I",
-  "Factory III - Unlock at <span class='factoryText'>10</span> x Factory II"
+  "Factory III - Unlock at <span class='factoryText'>10</span> x Factory II",
+  "Factory IV - Unlock at <span class='factoryText'>15</span> x Factory III",
+  "Factory V - Unlock at <span class='factoryText'>100</span> x Factory II",
+  "Factory VI - Unlock at <span class='factoryText'>20</span> x Factory V"
 ]
 const showFactory = [
   ()=>{return true},
   ()=>{return true},
-  ()=>{return player.tech[0]>=1}
+  ()=>{return player.tech[0]>=1},
+  ()=>{return player.tech[0]>=2},
+  ()=>{return player.tech[0]>=3},
+  ()=>{return player.tech[0]>=4}
 ]
-const factoryAmount = 3
+const factoryAmount = 6
 
 function createFactoryHTML(x){
-  let ele = document.createElement("tr")
+  let ele = document.createElement("div")
   let space = "&nbsp".repeat(3)
   space+="/"+space
-  ele.innerHTML=`<div id='factory${x}'><span id='factoryAmount${x}' class='factoryText'></span> x Factory ${romanNumeral(x)}${space}Rank <span id='factoryRank${x}'></span><br>+<span id='factoryTotalProduction${x}' class='factoryText'></span> point(s)${space}+<span id='factoryProduction${x}' class='factoryText'></span> point(s)/factory<br><span id='factoryToRank${x}' class='factoryText'></span>% to ranking up<br><button onclick='handleFactoryButtonClick(${x})' class='factory' id='factoryButton${x}'><span id='factoryCost${x}'></span></button></div><span id='factoryNotUnlocked${x}' style='display:none'>${factoryUnlockedText[x]}</span><br>`
+  ele.innerHTML=`<div id='factory${x}'><span id='factoryAmount${x}' class='factoryText'></span> x Factory ${romanNumeral(x)}${space}Rank <span id='factoryRank${x}'></span><br>+<span id='factoryTotalProduction${x}' class='factoryText'></span> point(s)${space}+<span id='factoryProduction${x}' class='factoryText'></span> point(s)/factory<br><span id='factoryToRank${x}' class='factoryText'></span>% to ranking up<br><div style='display:inline-flex;align-items:center'><button onclick='handleFactoryButtonClick(${x})' class='factory' id='factoryButton${x}'><span id='factoryCost${x}'></span></button><span id='factoryAutobuyer${x}'>&nbsp&nbsp<button id='factoryAutobuyerButton${x}' onclick='toggleFactoryAutobuyer(${x})' style='width:40px;height:25px'></button></span></div></div><span id='factoryNotUnlocked${x}' style='display:none'>${factoryUnlockedText[x]}</span><br>`
   document.getElementById("factories").appendChild(ele)
 }
 
@@ -34,13 +43,22 @@ function factoryProduction(x){
   let r = player.factory[x].r
   switch(x){
     case 0:
-      return r.add(1).times(techData[1].effect()).times(techData[2].effect())
+      return r.add(1).times(r.add(1).pow(player.tech[3])).times(techData[1].effect()).times(techData[2].effect()).times(techData[7].effect())
       break;
     case 1:
-      return player.factory[0].p.sqrt().add(1).times(r.div(2).add(1).pow(r.div(2).add(1)))
+      return player.factory[0].p.sqrt().add(1).times(r.times(techData[8].effect()).add(1).pow(r.times(techData[8].effect()).add(1))).times(player.factory[0].a.div(10).add(1).pow(player.tech[5]))
       break;
     case 2:
-      return player.factory[1].p.div(player.factory[1].a.add(1).sqrt()).add(1).times(r.div(2).add(1).pow(r.div(2).add(1)))
+      return player.factory[1].p.div(player.factory[1].a.add(1).sqrt()).add(1).times(r.div(2).add(1).pow(r.div(2).add(1))).times(player.factory[0].a.div(100).add(1).pow(player.tech[5]))
+      break;
+    case 3:
+      return player.factory[2].p.div(player.factory[2].a.add(1).sqrt()).add(1).times(r.div(2).add(1).pow(r.div(2).add(1))).times(player.factory[0].a.div(100).add(1).pow(player.tech[5]))
+      break;
+    case 4:
+      return player.factory[3].p.div(player.factory[3].a.add(1).sqrt()).add(1).times(r.div(2).add(1).pow(r.div(2).add(1))).times(player.factory[0].a.div(1000).add(1).pow(player.tech[5]))
+      break;
+    case 5:
+      return player.factory[4].p.div(player.factory[4].a.add(1).sqrt()).add(1).times(r.div(2).add(1).pow(r.div(2).add(1))).times(player.factory[0].a.div(1000).add(1).pow(player.tech[5]))
       break;
   }
 }
@@ -62,6 +80,11 @@ function buyFactory(x){
   }
 }
 
+function toggleFactoryAutobuyer(x){
+  player.autobuyers.factory[x]=!player.autobuyers.factory[x]
+  updateFactoryAutobuyer(x)
+}
+
 function updateFactory(textOnly=false,css=false){
   for(let x=0;x<factoryAmount;x++){
     if(css){
@@ -69,6 +92,7 @@ function updateFactory(textOnly=false,css=false){
       document.getElementById(`factoryButton${x}`).className=`factory ${cr?"rankup":(player.points.gte(player.factory[x].c)?"bought":"notbought")}`
       document.getElementById(`factory${x}`).style.display = player.factory[x].s&&player.factory[x].u?"":"none"
       document.getElementById(`factoryNotUnlocked${x}`).style.display = player.factory[x].s&&!player.factory[x].u?"":"none"
+      document.getElementById(`factoryAutobuyer${x}`).style.display = player.tech[6]>=x+1?"":"none"
       continue;
     }
     if(!textOnly){
@@ -87,7 +111,12 @@ function updateFactory(textOnly=false,css=false){
   }
 }
 
+function updateFactoryAutobuyer(x){
+  document.getElementById(`factoryAutobuyerButton${x}`).classList = player.autobuyers.factory[x]?"bought":"notbought"
+  document.getElementById(`factoryAutobuyerButton${x}`).innerText = player.autobuyers.factory[x]?"ON":"OFF"
+}
+
 function loadFactory(){
-  for(let x=0;x<factoryAmount;x++)createFactoryHTML(x)
+  for(let x=0;x<factoryAmount;x++){createFactoryHTML(x);updateFactoryAutobuyer(x)}
   updateFactory()
 }

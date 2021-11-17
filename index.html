@@ -23,38 +23,52 @@
     <script src="js/layers/rank.js" defer></script>
     <script src="js/layers/factory.js" defer></script>
     <script src="js/layers/tech.js" defer></script>
+    <script src="js/layers/auto.js" defer></script>
     
     <script src="js/main.js" defer></script>
   </head>
   <body onload="loadGame()">
-    <h1>Factory Incremental<sup style="font-size:20px">V0.0.6</sup></h1>
-    <h2>You have <span id="points"></span> points <sup>[+<span id="pps"></span> points/sec]</sup></h2>
-    <div id="tabs">
-      <button onclick="changeTab('factories')" class="tab">Factories</button>
-      <button onclick="changeTab('techtab')" class="tab" id="techtabbutton" style="display:none;border-color:blue">Technology</button>
-      <button onclick="changeTab('settings')" class="tab">Settings</button>
-    </div><br>
-    <table id="factories" style="display:none;width:100%"></table>
-    <div id="settings" style="display:none">
-      <button onclick="save()" style="border-color:green" class="settings">Save</button><br>
-      <button onclick="hardReset()" style="border-color:red" class="settings">Hard Reset</button>
-      <div id="changelog" style="text-align:left">
-        <h2>Change Log:</h2>
-        Most Recent:<br>
-        V0.0.6 - Tech+: 2 more tech and decreased factory 3 cost scaling. Endgame: F1R4
-        <br><br>---------------------------------------------------------------------------------------------------------------------<br><br>
-        V0.0.0 - The Beginning: Everything up to the first factory was added, including: saving, loading, the game loop, and updating everything. Also had a game breaking bug.<br><br>
-        V0.0.0b - The Beginning: Fixed the game breaking bug.<br><br>
-        V0.0.1 - Design: Made the game look nice.<br><br>
-        V0.0.2 - Design+: Adds tabs, settings, the changelog, more colors, and that little tab icon. Also fixes save data not being updated with new variables.<br><br>
-        V0.0.3 - Factories: Added the second factory, the factory unlocking system, a point gain and production per factory display, and added a discord embed thing.<br><br>
-        V0.0.4 - Ranks: Added ranks and a percent display for when you can rank up. Endgame: Factory 2 Rank 2 (you can get F1R3 if you want)
-        V0.0.5 - Tech: Added tech (2 upgrades) and the 3rd factory. Endgame: F1R3 with all tech
+    <h1>Factory Incremental<sup style="font-size:20px">V0.1.0</sup></h1>
+    <div id="game">
+      <h2>You have <span id="points"></span> points <sup>[+<span id="pps"></span> points/sec]</sup></h2>
+      <div id="tabs">
+        <button onclick="changeTab('factories')" class="tab">Factories</button>
+        <button onclick="changeTab('techtab')" class="tab" id="techtabbutton" style="display:none;border-color:blue">Technology</button>
+        <button onclick="changeTab('settings')" class="tab">Settings</button>
+      </div><br>
+      <div id="factories" style="display:none;width:100%"></div>
+      <div id="settings" style="display:none">
+        <button onclick="save()" style="border-color:green" class="settings">Save</button><br>
+        <button onclick="exportSave()" style="border-color:orange" class="settings">Export</button>
+        <button onclick="importSave()" style="border-color:blue" class="settings">Import</button><br>
+        <button onclick="hardReset()" style="border-color:red" class="settings">Hard Reset</button>
+        <div id="changelog" style="text-align:left">
+          <h2>Change Log:</h2>
+          Most Recent:<br>
+          V0.1.0 - Release: Added 3 more factorires, changed a tech, added 6 tech, added import/export, added factory autobuyers, and displays for how much tech you unlocked and the total amount of levels of tech you have. Endgame: 1e30 points
+          <br><br>---------------------------------------------------------------------------------------------------------------------<br><br>
+          V0.0.0 - The Beginning: Everything up to the first factory was added, including: saving, loading, the game loop, and updating everything. Also had a game breaking bug.<br><br>
+          V0.0.0b - The Beginning: Fixed the game breaking bug.<br><br>
+          V0.0.1 - Design: Made the game look nice.<br><br>
+          V0.0.2 - Design+: Adds tabs, settings, the changelog, more colors, and that little tab icon. Also fixes save data not being updated with new variables.<br><br>
+          V0.0.3 - Factories: Added the second factory, the factory unlocking system, a point gain and production per factory display, and added a discord embed thing.<br><br>
+          V0.0.4 - Ranks: Added ranks and a percent display for when you can rank up. Endgame: Factory 2 Rank 2 (you can get F1R3 if you want)
+          V0.0.5 - Tech: Added tech (2 upgrades) and the 3rd factory. Endgame: F1R3 with all tech<br><br>
+          V0.0.6 - Tech+: 2 more tech and decreased factory 3 cost scaling. Endgame: F1R4
+        </div>
+      </div>
+      <div id="techtab" style="display:none">
+        <h3>You have unlocked <span id="techUnlocked" class="techText"></span> out of <span id="totalTech" class="techText"></span> tech<br>You have bought <span id="techBought" class="techText"></span> out of <span id="totalTechToBuy" class="techText"></span> tech levels</h3>
+        <table id="tech" style="margin-right:auto;margin-left:auto"></table><br><br>
+        <span id="techDisplay"></span>
       </div>
     </div>
-    <div id="techtab" style="display:none">
-      <table id="tech" style="margin-right:auto;margin-left:auto"></table><br><br>
-      <span id="techDisplay"></span>
+    <div id="end" style="display:none">
+      <h2>You finished the game! [1e30 Points]</h2>
+      You can continue or reset your save.<br>
+      <button onclick="player.continue=true" class="bought">Continue</button>
+      &nbsp&nbsp&nbsp
+      <button onclick="hardReset(true)" class="notbought">Reset</button>
     </div>
   </body>
 </html>

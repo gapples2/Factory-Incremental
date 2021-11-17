@@ -2,12 +2,23 @@ function rankUpCost(x){
   let r = player.factory[x].r
   switch(x){
     case 0:
-      return new OmegaNum(1.8).pow(r).times(25).floor()
+      return new OmegaNum(1.8).pow(r).times(25).floor()-techData[9].effect()
       break;
     case 1:
-      return new OmegaNum(2.5).pow(r).times(10).floor()
+      return new OmegaNum(2.5).pow(r).times(10).floor()-techData[9].effect()
+      break;
     case 2:
-      return new OmegaNum(3.5).pow(r).times(15).floor()
+      return new OmegaNum(3.5).pow(r).times(15).floor()-techData[9].effect()
+      break;
+    case 3:
+      return new OmegaNum(5).pow(r).times(14).floor()-techData[9].effect()
+      break;
+    case 4:
+      return new OmegaNum(7).pow(r).times(13).floor()-techData[9].effect()
+      break;
+    case 5:
+      return new OmegaNum(9).pow(r).times(25).floor()-techData[9].effect()
+      break;
   }
 }
 function canRankUp(x){
