@@ -34,7 +34,7 @@ const techData = [
     effect(){
       return player.factory[0].a.add(1).log10().add(1).pow(player.tech[1])
     },
-    effectDisplay(){return `${format(this.effect())}x F1 production`},
+    effectDisplay(){return `${format(this.effect())}x F1 production [(log10(F1+1)+1)<sup>TECH</sup>]`},
     unlocked(){return player.tech[0]>=1}
   },
   {
@@ -49,7 +49,7 @@ const techData = [
     effect(){
       return player.factory[1].a.add(1).logBase(2).add(1).times(player.factory[2].a.add(1).sqrt()).pow(player.tech[2])
     },
-    effectDisplay(){return `${format(this.effect())}x F1 production`},
+    effectDisplay(){return `${format(this.effect())}x F1 production [((log2(F2+1)+1)*sqrt(F3+1))<sup>TECH</sup>]`},
     unlocked(){return player.tech[1]>=2}
   },
   {
@@ -77,7 +77,7 @@ const techData = [
       let x = player.tech[4]
       return eff.pow(x**x).pow(x==0?0:1)
     },
-    effectDisplay(){return `/${format(this.effect())}`},
+    effectDisplay(){return `/${format(this.effect())} [productOfRanks<sup>TECH<sup>TECH</sup></sup> (if you don't have any of this tech then it's 1)]`},
     unlocked(){return player.factory[3].r.gte(1)}
   },
   {
@@ -89,7 +89,7 @@ const techData = [
       let x = Math.min(player.tech[5],this.max()-1)
       return new OmegaNum(2).pow(new OmegaNum(3).pow(x+1)).times(1.25e10).div(x+1).pow(Math.min(0.95**(x-1),1))
     },
-    effectDisplay(){let a=player.factory[0].a;let x=player.tech[5];return `${format(a.div(10).add(1).pow(x))}x F2P<br>${format(a.div(100).add(1).pow(x))}x F3P & F4P${player.tech[0]>=3?`<br>${format(a.div(1000).add(1).pow(x))}x F5P${player.tech[0]>=4?" & F6P":""}`:""}`},
+    effectDisplay(){let a=player.factory[0].a;let x=player.tech[5];return `${format(a.div(10).add(1).pow(x))}x F2P [(F1/10+1)<sup>TECH</sup>]<br>${format(a.div(100).add(1).pow(x))}x F3P & F4P [(F1/100+1)<sup>TECH</sup>]${player.tech[0]>=3?`<br>${format(a.div(1000).add(1).pow(x))}x F5P${player.tech[0]>=4?" & F6P":""} [(F1/1,000+1)<sup>TECH</sup>]`:""}`},
     unlocked(){return player.pps.gte(4e9)}
   },
   {
@@ -114,7 +114,7 @@ const techData = [
     effect(){
       return player.factory[3].a.add(1).logBase(2).add(1).times(player.factory[4].a.add(1).sqrt()).pow(player.tech[7])
     },
-    effectDisplay(){return `${format(this.effect())}x F1 production`},
+    effectDisplay(){return `${format(this.effect())}x F1 production [((log2(F4+1)+1)*sqrt(F5+1))<sup>TECH</sup>]`},
     unlocked(){return player.tech[0]>=3}
   },
   {
@@ -130,7 +130,7 @@ const techData = [
       let x = player.tech[8]+1
       return 1-(0.4/x)-0.1
     },
-    effectDisplay(){return `((R-1)*${format(this.effect())}+1)<sup>((R-1)*${format(this.effect())}+1)</sup>`},
+    effectDisplay(){return `((R-1)*${format(this.effect())}+1)<sup>((R-1)*${format(this.effect())}+1)</sup> [1-0.4/TECH-0.1]`},
     unlocked(){return player.factory[4].r.gte(1)}
   },
   {
@@ -158,7 +158,7 @@ function buyTech(x){
 
 function handleTechHover(x){
   let data = techData[x]
-  document.getElementById("techDisplay").innerHTML = `<span class='techText'>${data.name}</span><br>${data.desc}<br>Costs ${format(data.cost())} points<br>${format(player.tech[x],0)}/${format(data.max(),0)}${data.effectDisplay?`<br><br>${data.effectDisplay()}`:""}`
+  document.getElementById("techDisplay").innerHTML = `<span class='techText'>${data.name}</span><br>${data.desc}<br>Costs ${format(data.cost())} points<br>${format(player.tech[x],0)}/${format(data.max(),0)}${data.effectDisplay?`<br><br>${data.effectDisplay()}`:"<br><br><br>"}`
 }
 
 function createTechHTML(x){
@@ -187,7 +187,7 @@ function updateTech(textOnly=false,css=false){
     player.unlocks.tech=player.factory[1].r.gte(1)
   }
   if(css){
-    document.getElementById("techtabbutton").style.display=player.unlocks.tech?"":"none"
+    document.getElementById("techdiv").style.display=player.unlocks.tech?"":"none"
   }
   for(let x=0;x<techData.length;x++){
     player.unlockedTech[x]=player.unlockedTech[x]||techData[x].unlocked()

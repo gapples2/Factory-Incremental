@@ -1,3 +1,5 @@
+const factoryBuySound = new Audio("https://cdn.glitch.me/87d6c344-7463-4a06-bb43-299659b0719b%2F5810162088017920.wav?v=1637242387777")
+
 const factoryCostScaling = [new OmegaNum(1.2),new OmegaNum(1.5),new OmegaNum(1.7),new OmegaNum(1.9),new OmegaNum(2.1),new OmegaNum(2.3)]
 const factoryBaseCost = [new OmegaNum(10),new OmegaNum(150),new OmegaNum(5000),new OmegaNum(1e7),new OmegaNum(1e19),new OmegaNum(1e25)]
 const factoryUnlocked = [
@@ -27,11 +29,19 @@ const showFactory = [
 const factoryAmount = 6
 
 function createFactoryHTML(x){
-  let ele = document.createElement("div")
+  let rowNum = Math.floor(x/3)
+  let row = document.getElementById(`factoryRow${rowNum}`)
+  if(!row){
+    row = document.createElement("tr")
+    row.id=`factoryRow${rowNum}`
+    document.getElementById("factories").appendChild(row)
+  }
+  let ele = document.createElement("td")
   let space = "&nbsp".repeat(3)
   space+="/"+space
-  ele.innerHTML=`<div id='factory${x}'><span id='factoryAmount${x}' class='factoryText'></span> x Factory ${romanNumeral(x)}${space}Rank <span id='factoryRank${x}'></span><br>+<span id='factoryTotalProduction${x}' class='factoryText'></span> point(s)${space}+<span id='factoryProduction${x}' class='factoryText'></span> point(s)/factory<br><span id='factoryToRank${x}' class='factoryText'></span>% to ranking up<br><div style='display:inline-flex;align-items:center'><button onclick='handleFactoryButtonClick(${x})' class='factory' id='factoryButton${x}'><span id='factoryCost${x}'></span></button><span id='factoryAutobuyer${x}'>&nbsp&nbsp<button id='factoryAutobuyerButton${x}' onclick='toggleFactoryAutobuyer(${x})' style='width:40px;height:25px'></button></span></div></div><span id='factoryNotUnlocked${x}' style='display:none'>${factoryUnlockedText[x]}</span><br>`
-  document.getElementById("factories").appendChild(ele)
+  ele.innerHTML=`<div id='factory${x}'><span id='factoryAmount${x}' class='factoryText'></span> x Factory ${romanNumeral(x)}${space}Rank <span id='factoryRank${x}'></span><br>+<span id='factoryTotalProduction${x}' class='factoryText'></span> point(s)${space}+<span id='factoryProduction${x}' class='factoryText'></span> point(s)/factory<br><span id='factoryToRank${x}' class='factoryText'></span>% to ranking up<br><div style='display:inline-flex;align-items:center'><button onclick='handleFactoryButtonClick(${x})' class='factory' id='factoryButton${x}'><span id='factoryCost${x}'></span></button><span id='factoryAutobuyer${x}'>&nbsp&nbsp<button id='factoryAutobuyerButton${x}' onclick='toggleFactoryAutobuyer(${x})'></button></span></div></div><span id='factoryNotUnlocked${x}' style='display:none'>${factoryUnlockedText[x]}</span>`
+  row.appendChild(ele)
+  document.getElementById("factoriesUnlockTxt").innerHTML+=`<span id='factoryNotUnlocked${x}' style='display:none'><br>${factoryUnlockedText[x]}</span>`
 }
 
 function factoryCost(x){
@@ -68,11 +78,12 @@ function factoryTotalProduction(x){
 }
 
 function handleFactoryButtonClick(x){
-  if(canRankUp(x))rankUp(x)
+  if(canRankUp(x)){rankUp(x)}
+  else if(player.factoryBuyMax){buyMaxFactory(x)}
   else buyFactory(x)
 }
 
-function buyFactory(x){
+function buyFactory(x,auto=false){
   if(player.points.gte(player.factory[x].c)){
     player.points=player.points.minus(player.factory[x].c)
     player.factory[x].a=player.factory[x].a.plus(1)
@@ -80,9 +91,26 @@ function buyFactory(x){
   }
 }
 
+function buyMaxFactory(x){
+  let max = player.points.div(factoryBaseCost[x]).logBase(factoryCostScaling[x]).minus(player.factory[x].a).floor()
+  if(OmegaNum.isNaN(max))return;
+  max=max.add(player.factory[x].a).min(rankUpCost(x)).minus(player.factory[x].a)
+  if(player.points.gte(player.factory[x].c))max=max.add(1)
+  if(max.lte(0))return;
+  let cost = factoryCostScaling[x].pow(max.add(player.factory[x].a).minus(1)).times(factoryBaseCost[x])
+  player.points=player.points.minus(cost)
+  player.factory[x].a=player.factory[x].a.add(max)
+  updateFactory()
+}
+
 function toggleFactoryAutobuyer(x){
   player.autobuyers.factory[x]=!player.autobuyers.factory[x]
   updateFactoryAutobuyer(x)
+}
+
+function toggleFactoryBuyMax(){
+  player.factoryBuyMax=!player.factoryBuyMax
+  updateFactoryBuyMax()
 }
 
 function updateFactory(textOnly=false,css=false){
@@ -116,7 +144,13 @@ function updateFactoryAutobuyer(x){
   document.getElementById(`factoryAutobuyerButton${x}`).innerText = player.autobuyers.factory[x]?"ON":"OFF"
 }
 
+function updateFactoryBuyMax(){
+  document.getElementById(`factoryBuyMax`).classList = player.factoryBuyMax?"bought":"notbought"
+  document.getElementById(`factoryBuyMax`).innerText = player.factoryBuyMax?"ON":"OFF"
+}
+
 function loadFactory(){
   for(let x=0;x<factoryAmount;x++){createFactoryHTML(x);updateFactoryAutobuyer(x)}
   updateFactory()
+  updateFactoryBuyMax()
 }

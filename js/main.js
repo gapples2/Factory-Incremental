@@ -1,12 +1,16 @@
 const D = x=>new OmegaNum(x)
+const music = new Audio("https://cdn.glitch.me/87d6c344-7463-4a06-bb43-299659b0719b%2Ffactoryincrementalmusic.wav?v=1637240763238")
+music.loop=true
+music.volume=0.3
 let devSpeed = 1
-const version = "0.1"
+const version = "0.1.1"
 function getStartPlayer(){
   return{
     //main
     points:D(10),
     pps:D(0),
     factory:[{a:D(0),c:D(0),p:D(0),r:D(0),s:false,u:false},{a:D(0),c:D(0),p:D(0),r:D(0),s:false,u:false},{a:D(0),c:D(0),p:D(0),r:D(0),s:false,u:false},{a:D(0),c:D(0),p:D(0),r:D(0),s:false,u:false},{a:D(0),c:D(0),p:D(0),r:D(0),s:false,u:false},{a:D(0),c:D(0),p:D(0),r:D(0),s:false,u:false}],
+    factoryBuyMax:false,
 
     //tech
     tech:[0,0,0,0,0,0,0,0,0,0],
@@ -15,7 +19,7 @@ function getStartPlayer(){
     //misc
     time: Date.now(),
     saveInterval: 0,
-    tab: "factories",
+    tab: "main",
     unlocks:{
       tech:false,
       auto:false,
@@ -88,7 +92,7 @@ function loadLayers(){
 function loadGame(){
   load()
   loadLayers()
-  changeTab(player.tab)
+  try{changeTab(player.tab)}catch(err){changeTab("main");console.error(err)}
   player.saveInterval=0
   requestAnimationFrame(loop)
 }

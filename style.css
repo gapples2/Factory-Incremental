@@ -90,3 +90,9 @@ span{
   font-size:20px;
   color:#00aaff
 }
+
+#points {
+  width: 5em;
+  display: inline-block;
+  font-family: monospace
+}
