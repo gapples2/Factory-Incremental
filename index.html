@@ -20,44 +20,71 @@
     <script src="js/internal/save.js" defer></script>
     <script src="js/internal/format.js" defer></script>
     
-    <script src="js/layers/rank.js" defer></script>
-    <script src="js/layers/factory.js" defer></script>
-    <script src="js/layers/tech.js" defer></script>
-    <script src="js/layers/auto.js" defer></script>
+    <script src="js/layers/layer0/factory/main.js" defer></script>
+    <script src="js/layers/layer0/factory/rank.js" defer></script>
+    <script src="js/layers/layer0/tech.js" defer></script>
+    <script src="js/layers/layer1/scraps/main.js" defer></script>
+    <script src="js/layers/layer1/scraps/milestones.js" defer></script>
+    <script src="js/layers/misc/auto.js" defer></script>
+    <script src="js/layers/misc/goals.js" defer></script>
+    <script src="js/layers/misc/tabs.js" defer></script>
     
     <script src="js/main.js" defer></script>
   </head>
   <body onload="loadGame()">
-    <h1>Factory Incremental<sup style="font-size:20px">V0.1.1</sup></h1>
+    <h1>Factory Incremental<sup style="font-size:20px">V0.2.0a</sup></h1>
     <div id="game">
-      <h2>You have <span id="points"></span> points <sup>[+<span id="pps"></span> points/sec]</sup></h2>
+      <h2>You have <span id="points" style="font-variant-numeric: tabular-nums;color:#cccccc"></span> points <sup>[+<span id="pps"></span> points/sec]</sup></h2>
+      <span id="goal"></span><br>
       <div id="tabs">
-        <button onclick="changeTab('main')" class="tab">Main</button>
-        <button onclick="changeTab('settings')" class="tab">Settings</button>
-      </div><br>
+        <button onclick="changeTab('main')" class="tab2" id="maintabbutton0">Factories</button>
+        <button class="tab2" onclick="changeTab('techdiv')" id="techtabbutton0">Technology</button>
+        <button class="tab2" onclick="changeTab('scrapdiv')" id="scraptabbutton0">Scraps</button>
+        <button onclick="changeTab('settings')" class="tab2" id="settingstabbutton0">Settings</button>
+      </div>
+      <button onclick="changeStackedTab('main')" class="tab" id="maintabbutton1">Factories</button>
       <div id="main" style="display:none">
         <h2 class="factoryText">Factories</h2>
-        <span style="display:inline-flex;align-text:center;flex-flow:row wrap;"><span style="display:flex;justify-content:center;align-items:center;">Buy max:&nbsp&nbsp</span><button id="factoryBuyMax" onclick="toggleFactoryBuyMax()"></button></span><br>
-        <table id="factories" style="width:100%"></table>
+        <span style="display:inline-flex;align-text:center;flex-flow:row wrap;"><span style="display:flex;justify-content:center;align-items:center;">Buy max:&nbsp&nbsp</span><button id="factoryBuyMax" onclick="toggleFactoryBuyMax()"></button><span style="display:flex;justify-content:center;align-items:center;" id="factoryAllAutobuyerToggleSpan"><span>&nbsp&nbsp/&nbsp&nbspToggle all autobuyers:&nbsp&nbsp</span><button id="factoryAllAutobuyerToggle" onclick="toggleAllFactoryAutobuyers()"></button></span></span><br>
+        <table id="factories" style="width:100%;font-variant-numeric:tabular-nums;"></table>
         <div id="factoriesUnlockTxt"></div>
-        <div id="techdiv" style="display:none">
-          <br>
-          <h2 class="techText">Technology</h2>
-          <h3>You have unlocked <span id="techUnlocked" class="techText"></span> out of <span id="totalTech" class="techText"></span> tech<br>You have bought <span id="techBought" class="techText"></span> out of <span id="totalTechToBuy" class="techText"></span> tech levels</h3>
-          <table id="tech" style="margin-right:auto;margin-left:auto"></table><br><br>
-          <span id="techDisplay"><br><br><br><br><br></span>
-        </div>
       </div>
+      <button class="tab" onclick="changeStackedTab('techdiv')" id="techtabbutton1">Technology</button>
+      <div id="techdiv" style="display:none">
+        <br>
+        <h2 class="techText">Technology</h2>
+        <h3>You have unlocked <span id="techUnlocked" class="techText"></span> out of <span id="totalTech" class="techText"></span> tech<br>You have bought <span id="techBought" class="techText"></span> out of <span id="totalTechToBuy" class="techText"></span> tech levels</h3>
+        <table id="tech" style="margin-right:auto;margin-left:auto"></table><br><br>
+        <div id="techDisplay" style="min-height:150px"></div>
+      </div>
+      <button class="tab" onclick="changeStackedTab('scrapdiv')" id="scraptabbutton1">Scraps</button>
+      <div id="scrapdiv" style="display:none">
+        <br>
+        <h2 class="scrapText">Scraps</h2>
+        <h3>You have <span id="scraps" class="scrapText"></span> scraps which boosts point gain by <span id="scrapEffect" class="scrapText"></span><br>You have <span id="money" class="moneyText"></span> money which divides tech costs by <span id="moneyEffect" class="moneyText"></span></h3>
+        <button id="scrapButton" onclick="gainScraps()" class="scrapResetButton"></button><br><br>
+        Convert <input id="convertInput" style="width:75px" maxlength="8" onchange="handleConversionEvents(0)"><span id="convertText"></span>
+        <button onclick="handleConversionEvents(3)" class="conversionButton">Convert</button>&nbsp&nbsp/&nbsp&nbsp
+        <button id="conversionAll" onclick="handleConversionEvents(4)"></button><br>
+        <span style="display:inline-flex;align-text:center;flex-flow:row wrap;"><span style="display:flex;justify-content:center;align-items:center;">Conversion Type:&nbsp&nbsp</span><button id="conversionType" onclick="handleConversionEvents(1)" class="conversionButton"></button><span style="display:flex;justify-content:center;align-items:center;">&nbsp&nbsp/&nbsp&nbspConversion Currency:&nbsp&nbsp</span><button id="conversionCurrency" onclick="handleConversionEvents(2)" class="conversionButton"></button></span><br>
+        <table id="milestones" style="margin-left:auto;margin-right:auto">
+          
+        </table>
+      </div>
+      <button onclick="changeStackedTab('settings')" class="tab" id="settingstabbutton1">Settings</button>
       <div id="settings" style="display:none">
+        <br>
+        <h2 class="factoryText">Settings</h2>
         <button onclick="save()" style="border-color:green" class="settings">Save</button><br>
         <button onclick="exportSave()" style="border-color:orange" class="settings">Export</button>
         <button onclick="importSave()" style="border-color:blue" class="settings">Import</button><br>
-        <button onclick="hardReset()" style="border-color:red" class="settings">Hard Reset</button>
+        <button onclick="hardReset()" style="border-color:red" class="settings">Hard Reset</button><br><br>
+        Tab Display: <button id="tabDisplay" onclick="changeTabOption()"></button>
         <div id="changelog" style="text-align:left">
           <h2>Change Log:</h2>
           Most Recent:<br>
-          V0.1.1 - Suggestion Update: Added/changed the following things: factory buy max, combined factory and tech tabs, made factories more compact, and you can now see tech formulas. Also added a secret thing in the code....
-          <br><br>---------------------------------------------------------------------------------------------------------------------<br><br>
+          V0.2.0a - Scraps: First part of the scraps update. Fixed a bug and added goals, a button to change all factory autobuyers, scraps, scrap and money converters, tech buttons grow while you're hovering over them, tab display options, scrap/money milestones, and 8 new tech (all added in that order). Endgame: 1e40 points
+          <br><br><hr><br><br>
           V0.0.0 - The Beginning: Everything up to the first factory was added, including: saving, loading, the game loop, and updating everything. Also had a game breaking bug.<br><br>
           V0.0.0b - The Beginning: Fixed the game breaking bug.<br><br>
           V0.0.1 - Design: Made the game look nice.<br><br>
@@ -66,7 +93,8 @@
           V0.0.4 - Ranks: Added ranks and a percent display for when you can rank up. Endgame: Factory 2 Rank 2 (you can get F1R3 if you want)
           V0.0.5 - Tech: Added tech (2 upgrades) and the 3rd factory. Endgame: F1R3 with all tech<br><br>
           V0.0.6 - Tech+: 2 more tech and decreased factory 3 cost scaling. Endgame: F1R4<br><br>
-          V0.1.0 - Release: Added 3 more factorires, changed a tech, added 6 tech, added import/export, added factory autobuyers, and displays for how much tech you unlocked and the total amount of levels of tech you have. Endgame: 1e30 points
+          V0.1.0 - Release: Added 3 more factorires, changed a tech, added 6 tech, added import/export, added factory autobuyers, and displays for how much tech you unlocked and the total amount of levels of tech you have. Endgame: 1e30 points<br><br>
+          V0.1.1 - Suggestion Update: Added/changed the following things: factory buy max, combined factory and tech tabs, made factories more compact, and you can now see tech formulas. Also added a secret thing in the code....
         </div>
       </div>
     </div>

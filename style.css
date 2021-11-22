@@ -1,7 +1,7 @@
 *{
   text-align:center;
   background-color:black;
-  color:white
+  color:white;
 }
 
 button{
@@ -61,16 +61,6 @@ span{
   border-color: #000055;
 }
 
-.tab{
-  width: 200px;
-  height: 25px;
-}
-
-.tab:hover{
-  width: 207px;
-  height: 27px;
-}
-
 .settings{
   width:100px;
   height:25px;
@@ -91,8 +81,138 @@ span{
   color:#00aaff
 }
 
-#points {
-  width: 5em;
-  display: inline-block;
-  font-family: monospace
+.scrapText{
+  font-size:20px;
+  color:#bbbbbb
+}
+
+.scrapResetButton{
+  font-variant-numeric:tabular-nums;
+  height:55px;
+  width:600px;
+}
+
+.scrapResetButton:hover{
+  height:59px;
+  width:620px;
+}
+
+.moneyText{
+  font-size:20px;
+  color:#dddd00
+}
+
+.conversionButton{
+  height:25px;
+  width:100px;
+}
+
+.conversionButton:hover{
+  width:110px
+}
+
+.tech{
+  width:50px;
+  height:50px;
+}
+
+.tech:hover{
+  width:60px;
+  height:60px;
+}
+
+#conversionAll{
+  width:205px
+}
+
+#conversionAll:hover{
+  width:215px;
+}
+
+.tab{
+  width:95%;
+  height:30px;
+  font-size:16px;
+  color:#aaaaaa;
+  border-color:#aaaaaa;
+}
+
+.tab:hover{
+  width:96%;
+  border-color:#dddddd;
+  color:#dddddd;
+}
+
+#techtabbutton:hover{
+  border-color:#00ddff;
+  color:#00ddff;
+}
+
+#techtabbutton{
+  border-color:#0000ff;
+  color:#0000ff;
+}
+
+#scraptabbutton{
+  border-color:#bbbbbb;
+  color:#bbbbbb;
+}
+
+#scraptabbutton:hover{
+  border-color:#dddd00;
+  color:#dddd00;
+}
+
+.tab2{
+  width:200px;
+  height:25px;
+}
+
+.tab2:hover{
+  width:210px;
+}
+
+#tabDisplay{
+  width:100px;
+  height:25px;
+}
+
+#tabDisplay:hover{
+  width:106px;
+}
+
+.milestone{
+  width:400px;
+  height:70px;
+  border:2px solid;
+  border-radius:5px;
+}
+
+.scrapsMilestoneIncomplete{
+  border-color: #aa0000;
+  background-color: #ffaaaa;
+  color: #aa0000;
+}
+
+.scrapsMilestoneComplete{
+  border-color: #444444;
+  background-color: #bbbbbb;
+  color: #444444;
+}
+
+.moneyMilestoneIncomplete{
+  border-color: #aa0000;
+  background-color: #ffaaaa;
+  color: #aa0000;
+}
+
+.moneyMilestoneComplete{
+  border-color: #777700;
+  background-color: #dddd00;
+  color: #777700;
+}
+
+b{
+  color:inherit;
+  background-color:inherit;
 }

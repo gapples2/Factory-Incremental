@@ -166,6 +166,17 @@ function formatSmall(num, precision=2) {
     return format(num, precision, true)    
 }
 
-function romanNumeral(x){
-  return ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX'][x]// i dont think i'll need anything higher than this
-}
+function romanNumeral (num) {
+  num++
+    if (isNaN(num))
+        return NaN;
+    var digits = String(+num).split(""),
+        key = ["","C","CC","CCC","CD","D","DC","DCC","DCCC","CM",
+               "","X","XX","XXX","XL","L","LX","LXX","LXXX","XC",
+               "","I","II","III","IV","V","VI","VII","VIII","IX"],
+        roman = "",
+        i = 3;
+    while (i--)
+        roman = (key[+digits.pop() + (i * 10)] || "") + roman;
+    return Array(+digits.join("") + 1).join("M") + roman;
+}//https://stackoverflow.com/questions/9083037/convert-a-number-into-a-roman-numeral-in-javascript
