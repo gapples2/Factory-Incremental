@@ -82,7 +82,7 @@ function loop(){
   player.pps=pointGain()
   
   player.points=player.points.add(player.pps.times(diff))
-  document.getElementById("points").innerText=format(player.points)
+  document.getElementById("points").innerText=player.won?"1e1,000":format(player.points)
   document.getElementById("pps").innerText=format(player.pps)
   
   player.saveInterval+=diff
@@ -101,7 +101,7 @@ function loop(){
   if(player.tabDisplay==0&&player.tab=="techdiv"||player.tabDisplay==1&&player.stackedTabs.includes("techdiv")||player.tabDisplay==2||justLoaded)updateTech(false,true)
   if(player.tabDisplay==0&&player.tab=="scrapdiv"||player.tabDisplay==1&&player.stackedTabs.includes("scrapdiv")||player.tabDisplay==2||justLoaded)updateScraps(false,true)
   
-  if(!player.won&&player.points.gte(1e100))player.won=true
+  if(!player.won&&player.points.gte(1e40))player.won=true
   document.getElementById("game").style.display=player.won&&!player.continue?"none":""
   document.getElementById("end").style.display=player.won&&!player.continue?"":"none"
   
