@@ -82,7 +82,7 @@ function loop(){
   player.pps=pointGain()
   
   player.points=player.points.add(player.pps.times(diff))
-  document.getElementById("points").innerText=player.won?"1e1,000":format(player.points)
+  document.getElementById("points").innerText=player.won?"1ee10":format(player.points)
   document.getElementById("pps").innerText=format(player.pps)
   
   player.saveInterval+=diff
